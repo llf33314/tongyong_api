@@ -1,6 +1,5 @@
 package com.gt.api.util;
 
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
