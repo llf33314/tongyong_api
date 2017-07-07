@@ -40,3 +40,4 @@ classes
 /src/main/java/com/example/generator/**
 
 /target
+bin/
