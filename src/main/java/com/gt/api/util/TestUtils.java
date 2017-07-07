@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by psr on 2017/7/7 0007.
  */
-public class StringUtils {
+public class TestUtils {
 
     /**
      * 手机号验证

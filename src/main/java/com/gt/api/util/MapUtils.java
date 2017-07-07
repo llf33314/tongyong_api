@@ -1,4 +1,4 @@
-package test.com.gt.api.util;
+package com.gt.api.util;
 
 /**
  * 地图工具类
