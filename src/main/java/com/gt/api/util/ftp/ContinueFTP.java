@@ -21,9 +21,11 @@ import com.gt.api.util.CharacterUtils;
 
 
 
+
+
 /**
  * 支持断点续传的FTP实用类
- *
+ * 测试一下
  * @author lfx
  * @version 0.1 实现基本断点上传下载
  * @version 0.2 实现上传下载进度汇报
