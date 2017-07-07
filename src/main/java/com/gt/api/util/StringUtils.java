@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Created by psr on 2017/7/7 0007.
  */
-public class StringUtil {
+public class StringUtils {
 
     /**
      * 手机号验证
@@ -21,7 +21,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isPhone(String phone){
-        if(StringUtils.isEmpty(phone)){
+        if(org.springframework.util.StringUtils.isEmpty(phone)){
             return false;
         }
         Pattern pattern =  Pattern.compile("(^(13[0123456789][0-9]{8}|15[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$)") ;
@@ -36,7 +36,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isEmail(String email){
-        if(StringUtils.isEmpty(email)){
+        if(org.springframework.util.StringUtils.isEmpty(email)){
             return false;
         }
         Pattern pattern =  Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$") ;
@@ -50,7 +50,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isUserName(String userName){
-        if(StringUtils.isEmpty(userName)){
+        if(org.springframework.util.StringUtils.isEmpty(userName)){
             return false;
         }
         Pattern pattern =  Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]{3,15}$") ;
@@ -65,7 +65,7 @@ public class StringUtil {
      * @return
      */
     public static boolean isIp(String ip){
-        if(StringUtils.isEmpty(ip)){
+        if(org.springframework.util.StringUtils.isEmpty(ip)){
             return false;
         }
         Pattern pattern =  Pattern.compile("^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$") ;
@@ -79,7 +79,7 @@ public class StringUtil {
      * @return
      */
     public static int string2Int(String value){
-        if(StringUtils.isEmpty(value)){
+        if(org.springframework.util.StringUtils.isEmpty(value)){
             return 0;
         }
 
@@ -110,7 +110,7 @@ public class StringUtil {
     }
 
     public static Object getObject4Session(HttpSession session, String key){
-        if(StringUtils.isEmpty(key)){
+        if(org.springframework.util.StringUtils.isEmpty(key)){
             return 0;
         }
         return session == null? null: session.getAttribute(key);
