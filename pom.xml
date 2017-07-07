@@ -15,10 +15,6 @@
         <version>1.0-RELEAEES</version>
     </parent>
 
-    <dependencies>
-
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
