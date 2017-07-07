@@ -21,6 +21,8 @@ import com.gt.api.util.CharacterUtils;
 
 
 
+
+
 /**
  * 支持断点续传的FTP实用类
  *
