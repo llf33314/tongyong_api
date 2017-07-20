@@ -20,7 +20,10 @@
     - 对应代码包的util
     - 类命名规则：XxxUtilsTest
     - 方法命名规则：xxxxTest
+
+
 谷通公用类API  
+
 BrowserUtils   判断访问浏览器相关信息
 CharacterUtils 字符转换，例如空值验证，String 转Int之类的
 DateTimeKitUtils  时间相关信息
