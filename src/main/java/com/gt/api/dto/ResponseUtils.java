@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.databind.annotation.JsonSerialize.Typing.DEF
 public class ResponseUtils< T > implements Serializable {
 
     /*状态码*/
-    private int status;
+    private int code;
 
     /*返回消息*/
     private String msg;
@@ -31,22 +31,22 @@ public class ResponseUtils< T > implements Serializable {
     /*泛型数据*/
     private T data;
 
-    protected ResponseUtils( int status ) {
-	this.status = status;
+    protected ResponseUtils( int code ) {
+	this.code = code;
     }
 
-    protected ResponseUtils( int status, T data ) {
-	this.status = status;
+    protected ResponseUtils( int code, T data ) {
+	this.code = code;
 	this.data = data;
     }
 
-    protected ResponseUtils( int status, String msg ) {
-	this.status = status;
+    protected ResponseUtils( int code, String msg ) {
+	this.code = code;
 	this.msg = msg;
     }
 
-    protected ResponseUtils( int status, String msg, T data ) {
-	this.status = status;
+    protected ResponseUtils( int code, String msg, T data ) {
+	this.code = code;
 	this.msg = msg;
 	this.data = data;
     }
@@ -57,7 +57,7 @@ public class ResponseUtils< T > implements Serializable {
      * @return ResponseUtils
      */
     public static < T > ResponseUtils< T > createBySuccess() {
-	return createBySuccessMessage( ResponseEnums.SUCCESS.getDesc() );
+	return createBySuccessMessage( ResponseEnums.SUCCESS.getMsg() );
     }
 
     /**
@@ -97,14 +97,14 @@ public class ResponseUtils< T > implements Serializable {
     /**
      * 创建响应成功
      *
-     * @param status 状态码
+     * @param code 状态码
      * @param msg    消息
      * @param data   数据包
      *
      * @return ResponseUtils
      */
-    public static < T > ResponseUtils< T > createBySuccessCodeMessage( int status, String msg, T data ) {
-	return new ResponseUtils<>( status, msg, data );
+    public static < T > ResponseUtils< T > createBySuccessCodeMessage( int code, String msg, T data ) {
+	return new ResponseUtils<>( code, msg, data );
     }
 
     /**
@@ -113,7 +113,7 @@ public class ResponseUtils< T > implements Serializable {
      * @return ResponseUtils
      */
     public static < T > ResponseUtils< T > createByError() {
-	return createByErrorCodeMessage( ResponseEnums.ERROR.getCode(), ResponseEnums.ERROR.getDesc() );
+	return createByErrorCodeMessage( ResponseEnums.ERROR.getCode(), ResponseEnums.ERROR.getMsg() );
     }
 
     /**
@@ -142,11 +142,11 @@ public class ResponseUtils< T > implements Serializable {
     //使之不在json序列化结果当中，作用用于判断
     @JsonIgnore
     public boolean isSuccess() {
-	return this.status == ResponseEnums.SUCCESS.getCode();
+	return this.code == ResponseEnums.SUCCESS.getCode();
     }
 
-    public int getStatus() {
-	return status;
+    public int getcode() {
+	return code;
     }
 
     public T getData() {
