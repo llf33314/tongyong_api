@@ -17,7 +17,10 @@ public enum SignEnum {
     SERVER_ERROR("201","系统错误")
     ;
 
-    SignEnum(String code, String value){};
+    SignEnum(String code, String value){
+        this.code = code;
+        this.value = value;
+    };
 
     private String code;
 

@@ -16,10 +16,10 @@ public class SignUtils {
      * @param signKey 签名密钥
      * @return SignBean 签名类JavaBean
      */
-    public static SignBean sign(String signKey){
+    public static SignBean sign(String signKey, String param){
         String timeStamp = String.valueOf(System.currentTimeMillis());
         String randNum = String.valueOf((int)((Math.random()*9+1)*10000));
-        String sign = MD5Utils.getMD5SM(signKey + timeStamp + randNum);
+        String sign = MD5Utils.getMD5SM(signKey + timeStamp + randNum + param);
         SignBean signBean = new SignBean(sign, timeStamp, randNum);
         return signBean;
     }
@@ -30,7 +30,7 @@ public class SignUtils {
      * @param signBean 签名Bean
      * @return 结果code（对应SignEnum里面的code）
      */
-    public static String decSign(String signKey, SignBean signBean){
+    public static String decSign(String signKey, SignBean signBean, String param){
         String reqTime = signBean.getTimeStamp();
         // 判断时间是否在10分钟内
         boolean timeOut = contrastTimeNow(Long.parseLong(reqTime)) > 10;
@@ -39,7 +39,7 @@ public class SignUtils {
         }
         // 根据key+时间撮+随机数-->MD5加密
         String reqSign = signBean.getSign();
-        String sign = MD5Utils.getMD5SM(signKey + reqSign + reqTime + signBean.getRandNum());
+        String sign = MD5Utils.getMD5SM(signKey + reqTime + signBean.getRandNum() + param);
         boolean signFail = !sign.equals(reqSign);
         if(signFail){
             return SignEnum.SIGN_ERROR.getCode();
