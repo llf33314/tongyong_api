@@ -12,18 +12,18 @@ public enum ResponseEnums {
     SYSTEM_ERROR( 9999, "系统异常" );
 
     private final int    code;
-    private final String desc;
+    private final String msg;
 
-    ResponseEnums( int code, String desc ) {
+    ResponseEnums( int code, String msg ) {
 	this.code = code;
-	this.desc = desc;
+	this.msg = msg;
     }
 
     public int getCode() {
 	return code;
     }
 
-    public String getDesc() {
-	return desc;
+    public String getMsg() {
+	return msg;
     }
 }
