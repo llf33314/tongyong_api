@@ -48,4 +48,33 @@ public class HttpClientUtil {
 										.build();
 		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
 	}
+	
+	
+	/**
+	 * post请求
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqGet(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
+	}
+	
+
+	
+	/**
+	 * post请求(返回乱码)
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqGetUTF8(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
+	}
 }
