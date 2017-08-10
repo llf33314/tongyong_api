@@ -227,7 +227,7 @@ public class HttpClienUtils {
 										.build();
 		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
 	}
-	
+	  
 	
 	public static void main(String arg[]) throws Exception{
 		Map<String, Object> params = new HashMap<>();
