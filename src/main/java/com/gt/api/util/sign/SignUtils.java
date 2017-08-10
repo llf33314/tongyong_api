@@ -1,7 +1,8 @@
-package com.gt.api.util;
+package com.gt.api.util.sign;
 
 import com.gt.api.bean.sign.SignBean;
 import com.gt.api.bean.sign.SignEnum;
+import com.gt.api.util.MD5Utils;
 
 /**
  * 签名工具类
