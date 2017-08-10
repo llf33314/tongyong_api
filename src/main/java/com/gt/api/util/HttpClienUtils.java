@@ -3,25 +3,36 @@ package com.gt.api.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpStatus;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.log4j.Logger;
+
+import com.gt.api.util.httpclient.LocalHttpClient;
 /**
  * http 请求获取参数
  * @author Administrator
  *
  */
 public class HttpClienUtils {
+	
+	protected static Header jsonHeader = new BasicHeader(HttpHeaders.CONTENT_TYPE,ContentType.APPLICATION_JSON.toString());
 
 	/**
 	 * post请求
@@ -156,6 +167,67 @@ public class HttpClienUtils {
 		return sb1.toString();
 	}
 	
+	
+	
+	/**
+	 * post请求
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqPost(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
+	}
+	
+
+	
+	/**
+	 * post请求(返回乱码)
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqPostUTF8(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.build();
+		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
+	}
+	
+	
+	/**
+	 * post请求
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqGet(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
+	}
+	
+
+	
+	/**
+	 * post请求(返回乱码)
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqGetUTF8(String messageJson ,String url,Class<T> clazz){
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
+	}
+	  
 	
 	public static void main(String arg[]) throws Exception{
 		Map<String, Object> params = new HashMap<>();
