@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2017/8/4 0004.
+ * Created by psr on 2017/8/4 0004.
  */
 public class SignTest {
 
@@ -20,23 +20,36 @@ public class SignTest {
         String signKey = "123456";
         String param = "{id:1,name:'one'}";
         SignBean signBean = SignUtils.sign(signKey, param);
-
+        // 验证签名
         String code = SignUtils.decSign(signKey, signBean, param);
         System.out.println(code);
     }
 
     @Test
-    public void testSignPost(){
-        String url = "http://192.168.3.98:7002/demo/getreq";
-//        String url = "http://192.168.3.98:7002/demo/getdemo";
+    public void testSignPostByParam(){
+        String url = "http://192.168.3.98:7002/demo/getByParam";
         String signKey = "5566";
-        Map<String, String> map = new HashMap<>();
-        map.put("id", "1");
-        map.put("name", "one");
+        // 使用map也是同样的效果
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", 3);
+        map.put("name", "three");
         map.put("pwd", "123456");
+        // 转成JSON，请使用fastjson
         String param = JSONObject.toJSONString(map);
         try {
             String result = SignHttpUtils.postByHttp(url, param, signKey);
+            System.out.println(result);
+        } catch (SignException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSignPostWithoutParam(){
+        String url = "http://192.168.3.98:7002/demo/getWithoutParam";
+        String signKey = "5566";
+        try {
+            String result = SignHttpUtils.postByHttp(url, null, signKey);
             System.out.println(result);
         } catch (SignException e) {
             e.printStackTrace();
