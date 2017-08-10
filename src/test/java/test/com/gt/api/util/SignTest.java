@@ -27,7 +27,8 @@ public class SignTest {
 
     @Test
     public void testSignPost(){
-        String url = "http://192.168.3.98:7002/demo/getdemo";
+        String url = "http://192.168.3.98:7002/demo/getreq";
+//        String url = "http://192.168.3.98:7002/demo/getdemo";
         String signKey = "5566";
         Map<String, String> map = new HashMap<>();
         map.put("id", "1");
@@ -35,7 +36,7 @@ public class SignTest {
         map.put("pwd", "123456");
         String param = JSONObject.toJSONString(map);
         try {
-            String result = SignHttpUtils.postByHttp(url, null, signKey);
+            String result = SignHttpUtils.postByHttp(url, param, signKey);
             System.out.println(result);
         } catch (SignException e) {
             e.printStackTrace();
