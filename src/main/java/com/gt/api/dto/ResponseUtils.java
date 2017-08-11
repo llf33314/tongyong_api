@@ -34,6 +34,9 @@ public class ResponseUtils< T > implements Serializable {
     protected ResponseUtils( int code ) {
 	this.code = code;
     }
+    
+    protected ResponseUtils() {
+        }
 
     protected ResponseUtils( int code, T data ) {
 	this.code = code;
