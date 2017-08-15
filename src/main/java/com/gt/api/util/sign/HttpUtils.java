@@ -101,16 +101,16 @@ public class HttpUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (inputStream != null) {
+			if (reader != null) {
 				try {
-					inputStream.close();
+					reader.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			if (reader != null) {
+			if (inputStream != null) {
 				try {
-					reader.close();
+					inputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
