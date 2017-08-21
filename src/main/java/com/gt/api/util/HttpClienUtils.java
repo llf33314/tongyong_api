@@ -4,27 +4,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-import net.sf.json.JSONObject;
-import org.apache.http.HttpStatus;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
-import org.apache.log4j.Logger;
 
+import com.gt.api.bean.sign.SignBean;
 import com.gt.api.util.httpclient.LocalHttpClient;
+import com.gt.api.util.sign.SignUtils;
+
+import net.sf.json.JSONObject;
 /**
  * http 请求获取参数
  * @author Administrator
@@ -174,6 +175,23 @@ public class HttpClienUtils {
 	 * @param messageJson
 	 * @return
 	 */
+	public static  <T> T reqPost(String messageJson ,String url,Class<T> clazz,String signKey){
+		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+										.setHeader(jsonHeader)
+										.setHeader("sign",signBean.getSign())
+										.setUri(url)
+										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
+	}
+	
+	
+	/**
+	 * post请求
+	 * @param messageJson
+	 * @return
+	 */
 	public static  <T> T reqPost(String messageJson ,String url,Class<T> clazz){
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -182,8 +200,24 @@ public class HttpClienUtils {
 										.build();
 		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
 	}
-	
 
+	
+	/**
+	 * post请求(返回乱码)
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqPostUTF8(String messageJson ,String url,Class<T> clazz,String signKey){
+		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+										.setHeader(jsonHeader)
+										.setHeader("sign",signBean.getSign())
+										.setUri(url)
+										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.build();
+		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
+	}
+	
 	
 	/**
 	 * post请求(返回乱码)
@@ -205,6 +239,23 @@ public class HttpClienUtils {
 	 * @param messageJson
 	 * @return
 	 */
+	public static  <T> T reqGet(String messageJson ,String url,Class<T> clazz,String signKey){
+		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setHeader("sign",signBean.getSign())
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
+	}
+	
+	
+	
+	/**
+	 * post请求
+	 * @param messageJson
+	 * @return
+	 */
 	public static  <T> T reqGet(String messageJson ,String url,Class<T> clazz){
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 										.setHeader(jsonHeader)
@@ -212,8 +263,23 @@ public class HttpClienUtils {
 										.build();
 		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
 	}
-	
 
+	
+	/**
+	 * post请求(返回乱码)
+	 * @param messageJson
+	 * @return
+	 */
+	public static  <T> T reqGetUTF8(String messageJson ,String url,Class<T> clazz,String signKey){
+		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+										.setHeader(jsonHeader)
+										.setHeader("sign",signBean.getSign())
+										.setUri(url)
+										.build();
+		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
+	}
+	
 	
 	/**
 	 * post请求(返回乱码)
@@ -229,17 +295,18 @@ public class HttpClienUtils {
 	}
 	  
 	
-	public static void main(String arg[]) throws Exception{
-		Map<String, Object> params = new HashMap<>();
-		
-		params.put("style", "1");
-		params.put("userId", "4856");
-		params.put("loginuc", "0");
-		params.put("erpstyle", "8");
-		String remoteUrl ="http://nb.deeptel.com.cn";
-		String url = remoteUrl+"/ErpMenus/79B4DE7C/getMenus.do";
-		JSONObject json = HttpClienUtils.httpPost(url, JSONObject.fromObject(params), false);
-		System.out.print( JsonUtils.json2Map(json.toString()));
-		
-	}
+//	public static void main(String arg[]) throws Exception{
+//		RequestUtils<OldApiSms> baseParam=new RequestUtils<OldApiSms>();
+//		OldApiSms apiSms=new OldApiSms();
+//		apiSms.setBusId(562);
+//		apiSms.setCompany("多粉平台");
+//		apiSms.setContent("可能你不信，我在测试");
+//		apiSms.setMobiles("13528307867");
+//		apiSms.setModel(0);
+//		baseParam.setReqdata(apiSms);
+//		String ss=com.alibaba.fastjson.JSONObject.toJSONString(baseParam);
+//		System.out.println(ss);
+//		Map map=reqPostUTF8(com.alibaba.fastjson.JSONObject.toJSONString(baseParam),"http://127.0.0.1:8083/8A5DA52E/smsapi/79B4DE7C/sendSmsOld.do",Map.class,"WXMP2017");
+//		System.out.println(com.alibaba.fastjson.JSONObject.toJSONString(map));
+//	}
 }
