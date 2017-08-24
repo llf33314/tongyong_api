@@ -208,10 +208,16 @@ public class HttpClienUtils {
 	 * @return
 	 */
 	public static  <T> T reqPostUTF8(String messageJson ,String url,Class<T> clazz,String signKey){
-		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		SignBean signBean = null;
+		try {
+			String newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
+			signBean = SignUtils.sign(signKey, newMsg);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
-										.setHeader("sign",signBean.getSign())
+										.setHeader("sign",com.alibaba.fastjson.JSONObject.toJSONString(signBean))
 										.setUri(url)
 										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
 										.build();
@@ -240,7 +246,13 @@ public class HttpClienUtils {
 	 * @return
 	 */
 	public static  <T> T reqGet(String messageJson ,String url,Class<T> clazz,String signKey){
-		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		SignBean signBean = null;
+		try {
+			String newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
+			signBean = SignUtils.sign(signKey, newMsg);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 										.setHeader(jsonHeader)
 										.setHeader("sign",signBean.getSign())
@@ -271,7 +283,13 @@ public class HttpClienUtils {
 	 * @return
 	 */
 	public static  <T> T reqGetUTF8(String messageJson ,String url,Class<T> clazz,String signKey){
-		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		SignBean signBean = null;
+		try {
+			String newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
+			signBean = SignUtils.sign(signKey, newMsg);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 										.setHeader(jsonHeader)
 										.setHeader("sign",signBean.getSign())
@@ -295,18 +313,30 @@ public class HttpClienUtils {
 	}
 	  
 	
-//	public static void main(String arg[]) throws Exception{
-//		RequestUtils<OldApiSms> baseParam=new RequestUtils<OldApiSms>();
+	public static void main(String arg[]) throws Exception{
+//		RequestUtils<Map> baseParam=new RequestUtils<Map>();
+//		Map<String, Object> obj=new HashMap<>();
+//		
+//		Map<String, Object> params=new HashMap<>();
+//		params.put("busId", 562);
+//		params.put("company", "多粉平台");
+////		params.put("company", "dfpt");
+//		params.put("content", "可能你不信，我在测试");
+////		params.put("content", "i am test");
+//		params.put("mobiles", "13632374547");
+//		params.put("model", 0);
 //		OldApiSms apiSms=new OldApiSms();
 //		apiSms.setBusId(562);
 //		apiSms.setCompany("多粉平台");
 //		apiSms.setContent("可能你不信，我在测试");
 //		apiSms.setMobiles("13528307867");
 //		apiSms.setModel(0);
-//		baseParam.setReqdata(apiSms);
-//		String ss=com.alibaba.fastjson.JSONObject.toJSONString(baseParam);
+//		obj.put("reqdata", params);
+//		baseParam.setReqdata(params);
+//		String ss=com.alibaba.fastjson.JSONObject.toJSONString(obj);
 //		System.out.println(ss);
-//		Map map=reqPostUTF8(com.alibaba.fastjson.JSONObject.toJSONString(baseParam),"http://127.0.0.1:8083/8A5DA52E/smsapi/79B4DE7C/sendSmsOld.do",Map.class,"WXMP2017");
+//		
+//		Map map=reqPostUTF8( ss,"http://192.168.2.7:8080/8A5DA52E/smsapi/6F6D9AD2/79B4DE7C/sendSmsOld.do",Map.class,"123");
 //		System.out.println(com.alibaba.fastjson.JSONObject.toJSONString(map));
-//	}
+	}
 }
