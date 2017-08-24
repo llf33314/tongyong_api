@@ -35,20 +35,11 @@ public class BodyRequestWrapper extends HttpServletRequestWrapper {
         final ByteArrayInputStream bais = new ByteArrayInputStream(body);
 
         return new ServletInputStream() {
-            @Override
-            public boolean isFinished() {
-                return false;
-            }
+            public boolean isFinished() { return false; }
 
-            @Override
-            public boolean isReady() {
-                return false;
-            }
+            public boolean isReady() { return false; }
 
-            @Override
-            public void setReadListener(ReadListener readListener) {
-
-            }
+            public void setReadListener(ReadListener readListener) { }
 
             @Override
             public int read() throws IOException {
