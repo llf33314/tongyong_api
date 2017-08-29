@@ -69,7 +69,7 @@ public class HttpUtils {
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
-			InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+			InputStreamReader isr = new InputStreamReader(conn.getInputStream(),"utf-8");
 			in = new BufferedReader(isr);
 			String line;
 			while ((line = in.readLine()) != null) {
