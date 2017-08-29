@@ -29,7 +29,7 @@ public class SignHttpUtils {
         SignBean signBean = SignUtils.sign(signKey, param);
         Map<String, String> headers = new HashMap<>();
         headers.put("sign", JSONObject.toJSONString(signBean));
-        String result = HttpUtils.sendPostByHeaders(url, headers, param);
+        String result = HttpUtils.sendPostByHeadersByTens(url, headers, param);
         return result;
     }
   /**
@@ -48,7 +48,7 @@ public class SignHttpUtils {
         SignBean signBean = SignUtils.sign(signKey, null);
         Map<String, String> headers = new HashMap<>();
         headers.put("sign", JSONObject.toJSONString(signBean));
-        String result = HttpUtils.sendPostByHeaders(url, headers, param);
+        String result = HttpUtils.sendPostByHeadersByTens(url, headers, param);
         return result;
     }
 
