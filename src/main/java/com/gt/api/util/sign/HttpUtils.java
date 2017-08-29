@@ -24,7 +24,7 @@ public class HttpUtils {
 	 * @return
 	 */
 	static String sendPostByHeadersByTens(String url, Map<String, String> headers, String param) {
-		return sendPostByHeaders(url, headers, param, 10000);
+		return sendPostByHeaders(url, headers, param, 10000, "utf-8");
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class HttpUtils {
 	 * @param timeout 超时时间
 	 * @return 返回参数
 	 */
-	static String sendPostByHeaders(String url, Map<String, String> headers, String param, int timeout) {
+	static String sendPostByHeaders(String url, Map<String, String> headers, String param, int timeout, String charsetName) {
 		PrintWriter out = null;
 		BufferedReader in = null;
 		String result = "";
@@ -69,7 +69,7 @@ public class HttpUtils {
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
-			InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+			InputStreamReader isr = new InputStreamReader(conn.getInputStream(), charsetName);
 			in = new BufferedReader(isr);
 			String line;
 			while ((line = in.readLine()) != null) {
