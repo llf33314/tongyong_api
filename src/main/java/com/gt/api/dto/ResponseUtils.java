@@ -22,7 +22,12 @@ import static com.fasterxml.jackson.databind.annotation.JsonSerialize.Typing.DEF
 @JsonSerialize( typing = DEFAULT_TYPING )
 public class ResponseUtils< T > implements Serializable {
 
-    /*状态码*/
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/*状态码*/
     private int code;
 
     /*返回消息*/
@@ -35,7 +40,7 @@ public class ResponseUtils< T > implements Serializable {
 	this.code = code;
     }
     
-    protected ResponseUtils() {
+    public ResponseUtils() {
         }
 
     protected ResponseUtils( int code, T data ) {
@@ -159,4 +164,20 @@ public class ResponseUtils< T > implements Serializable {
     public String getMsg() {
 	return msg;
     }
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public void setData(T data) {
+		this.data = data;
+	}
 }
