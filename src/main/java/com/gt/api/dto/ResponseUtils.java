@@ -153,9 +153,6 @@ public class ResponseUtils< T > implements Serializable {
 	return this.code == ResponseEnums.SUCCESS.getCode();
     }
 
-    public int getcode() {
-	return code;
-    }
 
     public T getData() {
 	return data;
