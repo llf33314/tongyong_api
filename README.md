@@ -46,4 +46,5 @@
 | SignUtis     | 签名工具类     |      |
 | ResponseUtils     | 通用响应数据格式工具类与ResponseEnum搭配使用    |      |
 | ResponseEnum     | 通用消息工具类     |      |
+| SessionUtils     | 公用session的方法类     |      |
 
