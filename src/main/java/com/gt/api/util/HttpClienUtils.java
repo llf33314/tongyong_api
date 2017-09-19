@@ -209,9 +209,10 @@ public class HttpClienUtils {
 	 */
 	public static  <T> T reqPostUTF8(String messageJson ,String url,Class<T> clazz,String signKey){
 		SignBean signBean = null;
+		String newMsg="";
 		try {
-			String newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
-			signBean = SignUtils.sign(signKey, newMsg);
+			newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
+			signBean = sign(signKey, newMsg);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -219,10 +220,26 @@ public class HttpClienUtils {
 										.setHeader(jsonHeader)
 										.setHeader("sign",com.alibaba.fastjson.JSONObject.toJSONString(signBean))
 										.setUri(url)
-										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.setEntity(new StringEntity(newMsg,Charset.forName("utf-8")))
 										.build();
 		return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,clazz);
 	}
+	
+	
+	/**
+     * 签名
+     * @param signKey 签名密钥
+     * @return SignBean 签名类JavaBean
+	 * @throws Exception 
+     */
+    public static SignBean sign(String signKey, String param) throws Exception{
+    	KeysUtil keysUtil=new KeysUtil();
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        String randNum = String.valueOf((int)((Math.random()*9+1)*10000));
+        String sign = keysUtil.getEncString(signKey + timeStamp + randNum + param);
+        SignBean signBean = new SignBean(sign, timeStamp, randNum);
+        return signBean;
+    }
 	
 	
 	/**
