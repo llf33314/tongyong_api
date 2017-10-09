@@ -17,7 +17,7 @@ public class SessionUtils {
     public static String SESSION_LOGIN_STYLE = "loginStyle";
     public static String SESSION_COMMON_STAFF = "TCommonStaff";
     public static String SESSION_PIDBUSID = "PidBusId";
-
+    public static String SESSION_UNIONBUS = "union_bus";
     //获取用户bus_user   SESSION的值
     public static BusUser getLoginUser(HttpServletRequest request) {
         try {
@@ -186,4 +186,30 @@ public class SessionUtils {
         }
         return null;
     }
+
+    /**
+     * 存入商家联盟里面的值
+     * @param request
+     * @param user
+     */
+    public static void setUnionBus(HttpServletRequest request,BusUser user){
+        request.getSession().setAttribute(SESSION_UNIONBUS, JSONObject.toJSONString(user));
+    }
+    //获取商家联盟里面的值
+    public static BusUser getUnionBus(HttpServletRequest request) {
+        try {
+            Object obj = request.getSession().getAttribute(SESSION_UNIONBUS);
+
+            if(obj != null){
+
+                BusUser user =  JSONObject.toJavaObject((JSONObject.parseObject(obj.toString())),BusUser.class );
+                return user;
+            }else{
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    };
 }
