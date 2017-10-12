@@ -1,9 +1,18 @@
 package com.gt.api.util.sign;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
 import javax.servlet.ServletRequest;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -56,6 +65,7 @@ public class HttpUtils {
 					conn.setRequestProperty(key, headers.get(key));
 				}
 			}
+			String entity = new String(param.getBytes("utf-8"));
 			// 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -64,7 +74,7 @@ public class HttpUtils {
 			// 获取URLConnection对象对应的输出流
 			out = new PrintWriter(conn.getOutputStream());
 			// 发送请求参数
-			out.print(param);
+			out.print(entity);
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
@@ -194,5 +204,96 @@ public class HttpUtils {
 			}
 		}
 		return sb.toString();
+	}
+
+
+	static String sendwxmpPostByHeadersByTens(String url, Map<String, String> headers, String param) {
+		return sendwxmpPostByHeaders(url, headers, param);
+	}
+
+	static String sendwxmpPostByHeaders(String url, Map<String, String> headers, String param) {
+
+		// post请求返回结果
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// 设置超时时间
+		// 构建请求配置信息
+		RequestConfig config = RequestConfig.custom().setConnectTimeout(1000) // 创建连接的最长时间
+				.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
+				.setSocketTimeout(10 * 1000) // 数据传输的最长时间
+				.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
+				.build();
+		// 设置请求配置信息
+		String jsonResult = null;
+		HttpPost post = new HttpPost(url);
+		post.setConfig(config);
+		post.addHeader("sign", headers.get("sign").toString());
+		try {
+			if (null != param) {
+				// 解决中文乱码问题
+				StringEntity entity = new StringEntity(param,
+						"utf-8");
+				entity.setContentEncoding("UTF-8");
+				entity.setContentType("application/json");
+				post.setEntity(entity);
+			}
+			HttpResponse response = httpClient.execute(post);
+			url = URLDecoder.decode(url, "UTF-8");
+			/** 请求发送成功，并得到响应 **/
+			if (response.getStatusLine().getStatusCode() == 200) {
+				String str = "";
+				try {
+					/** 读取服务器返回过来的json字符串数据 **/
+					if (false) {
+						return null;
+					}
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						InputStream instreams = entity.getContent();
+						str = convertStreamToString(instreams);
+						post.abort();
+					}
+
+					/** 把json字符串转换成json对象 **/
+					jsonResult = str;
+				} catch (Exception e) {
+					try {
+						throw new Exception();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		} catch (IOException e) {
+			try {
+				throw new Exception();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		return jsonResult;
+	}
+
+
+	public static String convertStreamToString(InputStream is) {
+		StringBuilder sb1 = new StringBuilder();
+		byte[] bytes = new byte[4096];
+		int size = 0;
+		try {
+			while ((size = is.read(bytes)) > 0) {
+				String str = new String(bytes, 0, size, "UTF-8");
+				sb1.append(str);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return sb1.toString();
 	}
 }

@@ -48,7 +48,7 @@ public class SignHttpUtils {
         SignBean signBean = SignUtils.sign(signKey, null);
         Map<String, String> headers = new HashMap<>();
         headers.put("sign", JSONObject.toJSONString(signBean));
-        String result = HttpUtils.sendPostByHeadersByTens(url, headers, param);
+        String result = HttpUtils.sendwxmpPostByHeadersByTens(url, headers, param);
         return result;
     }
 
