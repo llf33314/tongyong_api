@@ -48,7 +48,7 @@ public class HttpUtils {
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent",
 					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-			conn.setRequestProperty("Content-type", "application/json;charset=UTF-8");
+			conn.setRequestProperty("Content-type", "application/json;charset=GBK");
 			
 			// 自定义header头部请求参数
 			if(headers != null && !headers.isEmpty()){
@@ -56,7 +56,6 @@ public class HttpUtils {
 					conn.setRequestProperty(key, headers.get(key));
 				}
 			}
-			String entity = new String(param.getBytes("utf-8"));
 			// 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -65,7 +64,7 @@ public class HttpUtils {
 			// 获取URLConnection对象对应的输出流
 			out = new PrintWriter(conn.getOutputStream());
 			// 发送请求参数
-			out.write(entity);
+			out.print(param);
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
