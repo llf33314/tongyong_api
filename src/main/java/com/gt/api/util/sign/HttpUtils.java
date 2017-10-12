@@ -56,7 +56,7 @@ public class HttpUtils {
 					conn.setRequestProperty(key, headers.get(key));
 				}
 			}
-			
+			String entity = new String(param.getBytes("utf-8"));
 			// 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
