@@ -65,7 +65,7 @@ public class HttpUtils {
 			// 获取URLConnection对象对应的输出流
 			out = new PrintWriter(conn.getOutputStream());
 			// 发送请求参数
-			out.print(param);
+			out.write(entity);
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
