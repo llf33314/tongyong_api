@@ -85,13 +85,22 @@ public class SessionUtils {
         return null;
     };
 
-
-    public static Member getLoginMember(HttpServletRequest request) {
+    /**
+     *
+     * @param request
+     * @param busid 商家ID
+     * @return
+     */
+    public static Member getLoginMember(HttpServletRequest request,Integer busid) {
         try {
             Object obj = request.getSession().getAttribute(SESSION_MEMBER);
             if(obj != null){
                 Member mem = JSONObject.toJavaObject((JSONObject.parseObject(obj.toString())),Member.class );
-                return mem;
+                if(mem.getBusid()==busid){
+                    return mem;
+                }else{
+                    return null;
+                }
             }else{
                 return null;
             }
