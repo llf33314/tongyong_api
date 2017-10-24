@@ -96,7 +96,7 @@ public class SessionUtils {
             Object obj = request.getSession().getAttribute(SESSION_MEMBER);
             if(obj != null){
                 Member mem = JSONObject.toJavaObject((JSONObject.parseObject(obj.toString())),Member.class );
-                if(mem.getBusid()==busid){
+                if(mem.getBusid().equals(busid)){
                     return mem;
                 }else{
                     return null;
