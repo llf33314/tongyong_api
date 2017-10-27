@@ -118,6 +118,15 @@ public class KeysUtil {
     public KeysUtil() throws Exception {  
         this(strDefaultKey);  
     }  
+    
+    static{
+    	try {
+			new KeysUtil(strDefaultKey);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
   
     /** 
      * 指定密钥构造方法 
@@ -220,15 +229,14 @@ public class KeysUtil {
     }  
   
     public static void main(String[] args) throws Exception {  
-    	KeysUtil des = new KeysUtil();  
         String str1 = "22222222222222222222222222222222";  
         String str3 = "2";  
         // DES加密  
   
   
-        String str2 = des.getEncString(str1);  
-        String str4 = des.getEncString(str3);  
-        String deStr = des.getDesString(str2);  
+        String str2 =getEncString(str1);  
+        String str4 = getEncString(str3);  
+        String deStr = getDesString(str2);  
         System.out.println("密文:" + str2);  
         System.out.println("密文:" + str4);  
         // DES解密  
