@@ -14,8 +14,8 @@ public class KeysUtil {
 	
 	private static String strDefaultKey = "goodluck";  
 	  
-    private Cipher encryptCipher = null;  
-    private Cipher decryptCipher = null;  
+    private static Cipher encryptCipher = null;  
+    private static Cipher decryptCipher = null;  
   
     /** 
      * 暗号化 明文入力String 密文出力 
@@ -25,7 +25,7 @@ public class KeysUtil {
      * @return 密文 
      * @throws Exception 
      */  
-    public String getEncString(String strMing) throws Exception {  
+    public static String getEncString(String strMing) throws Exception {  
         return byteArr2HexStr(encrypt(strMing.getBytes("UTF8")));  
     }  
   
@@ -39,11 +39,11 @@ public class KeysUtil {
      * @return 明文 
      * @throws Exception 
      */  
-    public String getDesString(String strMi) throws Exception {  
+    public static String getDesString(String strMi) throws Exception {  
         return new String(decrypt(hexStr2ByteArr(strMi)),"UTF8");  
     }  
       
-    public String getDesStr(String strMi)  {  
+    public  String getDesStr(String strMi)  {  
         String ming=null;  
         try {  
             ming= new String(decrypt(hexStr2ByteArr(strMi)),"UTF8");  
@@ -149,7 +149,7 @@ public class KeysUtil {
  
      * @throws Exception 
      */  
-    private byte[] encrypt(byte[] arrB) throws Exception {  
+    private static byte[] encrypt(byte[] arrB) throws Exception {  
         return encryptCipher.doFinal(arrB);  
     }  
   
@@ -176,7 +176,7 @@ public class KeysUtil {
  
      * @throws Exception 
      */  
-    private byte[] decrypt(byte[] arrB) throws Exception {  
+    private static byte[] decrypt(byte[] arrB) throws Exception {  
         return decryptCipher.doFinal(arrB);  
     }  
   
@@ -221,7 +221,7 @@ public class KeysUtil {
   
     public static void main(String[] args) throws Exception {  
     	KeysUtil des = new KeysUtil();  
-        String str1 = "卧槽";  
+        String str1 = "22222222222222222222222222222222";  
         String str3 = "2";  
         // DES加密  
   
