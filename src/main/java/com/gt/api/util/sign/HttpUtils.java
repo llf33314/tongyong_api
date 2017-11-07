@@ -276,14 +276,14 @@ public class HttpUtils {
 	}
 
 
-	public static String convertStreamToString(InputStream is) {
-		StringBuilder sb1 = new StringBuilder();
-		byte[] bytes = new byte[4096];
-		int size = 0;
+	public static String convertStreamToString(InputStream is) throws UnsupportedEncodingException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"utf-8"));
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
 		try {
-			while ((size = is.read(bytes)) > 0) {
-				String str = new String(bytes, 0, size, "UTF-8");
-				sb1.append(str);
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -294,6 +294,6 @@ public class HttpUtils {
 				e.printStackTrace();
 			}
 		}
-		return sb1.toString();
+		return sb.toString();
 	}
 }
