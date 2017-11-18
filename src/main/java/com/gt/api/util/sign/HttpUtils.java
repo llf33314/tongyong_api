@@ -25,6 +25,23 @@ import java.util.Map;
  */
 public class HttpUtils {
 
+	private static 	CloseableHttpClient httpClient = null;
+	private static 	RequestConfig config = null;
+
+	public static void init(){
+		if(httpClient==null||httpClient.equals("")||config==null||config.equals("")){
+			httpClient = HttpClients.createDefault();
+			// 设置超时时间
+			// 构建请求配置信息
+			RequestConfig config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
+					.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
+					.setSocketTimeout(10 * 1000) // 数据传输的最长时间
+					.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
+					.build();
+
+		}
+	}
+
 	/**
 	 * 带头部信息的post请求，超时10秒钟
 	 * @param url
@@ -208,20 +225,19 @@ public class HttpUtils {
 
 
 	static String sendwxmpPostByHeadersByTens(String url, Map<String, String> headers, String param) {
-		return sendwxmpPostByHeaders(url, headers, param);
+		String result = null;
+		for(int i=0;i<5;i++){
+			result = sendwxmpPostByHeaders(url, headers, param);
+			if(result!=null&&!result.equals("")){
+				break;
+			}
+		}
+		return result;
 	}
 
 	static String sendwxmpPostByHeaders(String url, Map<String, String> headers, String param) {
 
-		// post请求返回结果
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-		// 设置超时时间
-		// 构建请求配置信息
-		RequestConfig config = RequestConfig.custom().setConnectTimeout(1000) // 创建连接的最长时间
-				.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
-				.setSocketTimeout(10 * 1000) // 数据传输的最长时间
-				.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
-				.build();
+		init();
 		// 设置请求配置信息
 		String jsonResult = null;
 		HttpPost post = new HttpPost(url);
@@ -257,7 +273,7 @@ public class HttpUtils {
 					jsonResult = str;
 				} catch (Exception e) {
 					try {
-						throw new Exception();
+						return null;
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -266,7 +282,7 @@ public class HttpUtils {
 			}
 		} catch (IOException e) {
 			try {
-				throw new Exception();
+				return null;
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
