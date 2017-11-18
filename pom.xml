@@ -5,7 +5,7 @@
 
 	<groupId>com.gt.api</groupId>
 	<artifactId>gt_api</artifactId>
-	<version>1.3.15-SNAPSHOT</version>
+	<version>1.3.16-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -106,6 +106,22 @@
                     </execution>
                 </executions>
             </plugin>
+			<!-- 要将源码放上去，需要加入这个插件 -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
