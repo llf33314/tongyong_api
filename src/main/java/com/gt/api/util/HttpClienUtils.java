@@ -176,12 +176,19 @@ public class HttpClienUtils {
 	 * @return
 	 */
 	public static  <T> T reqPost(String messageJson ,String url,Class<T> clazz,String signKey){
-		SignBean 	signBean=SignUtils.sign(signKey, messageJson);
+		SignBean signBean = null;
+		String newMsg="";
+		try {
+			newMsg = new String(messageJson.getBytes("utf-8"), "utf-8");
+			signBean = sign(signKey, newMsg);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
-										.setHeader("sign",signBean.getSign())
+										.setHeader("sign",com.alibaba.fastjson.JSONObject.toJSONString(signBean))
 										.setUri(url)
-										.setEntity(new StringEntity(messageJson,Charset.forName("utf-8")))
+										.setEntity(new StringEntity(newMsg,Charset.forName("utf-8")))
 										.build();
 		return LocalHttpClient.executeJsonResult(httpUriRequest,clazz);
 	}
@@ -193,6 +200,7 @@ public class HttpClienUtils {
 	 * @return
 	 */
 	public static  <T> T reqPost(String messageJson ,String url,Class<T> clazz){
+		
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(url)
