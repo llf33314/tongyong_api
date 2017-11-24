@@ -23,53 +23,53 @@ public class JsonResponseHandler{
 	@SuppressWarnings("unchecked")
 	public static <T> ResponseHandler<T> createResponseHandler(final Class<T> clazz){
 
-		if(map.containsKey(clazz.getName())){
-			return (ResponseHandler<T>)map.get(clazz.getName());
-		}else{
-			ResponseHandler<T> responseHandler = new ResponseHandler<T>() {
-				@Override
-				public T handleResponse(HttpResponse response)
-						throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-	                if (status >= 200 && status < 300) {
-	                    HttpEntity entity = response.getEntity();
-	                    String str = EntityUtils.toString(entity);
+//		if(map.containsKey(clazz.getName())){
+//			return (ResponseHandler<T>)map.get(clazz.getName());
+//		}else{
+//		}
+		ResponseHandler<T> responseHandler = new ResponseHandler<T>() {
+			@Override
+			public T handleResponse(HttpResponse response)
+					throws ClientProtocolException, IOException {
+				int status = response.getStatusLine().getStatusCode();
+				if (status >= 200 && status < 300) {
+					HttpEntity entity = response.getEntity();
+					String str = EntityUtils.toString(entity);
 //	                    System.out.println("str:"+str);
-	                    return JsonUtil.parseObject(new String(str), clazz);
-	                } else {
-	                    throw new ClientProtocolException("Unexpected response status: " + status);
-	                }
+					return JsonUtil.parseObject(new String(str), clazz);
+				} else {
+					throw new ClientProtocolException("Unexpected response status: " + status);
 				}
-			};
-			map.put(clazz.getName(), responseHandler);
-			return responseHandler;
-		}
+			}
+		};
+		map.put(clazz.getName(), responseHandler);
+		return responseHandler;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T> ResponseHandler<T> createResponseHandlerUTF8(final Class<T> clazz){
 
-		if(map.containsKey(clazz.getName())){
-			return (ResponseHandler<T>)map.get(clazz.getName());
-		}else{
-			ResponseHandler<T> responseHandler = new ResponseHandler<T>() {
-				@Override
-				public T handleResponse(HttpResponse response)
-						throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-	                if (status >= 200 && status < 300) {
-	                    HttpEntity entity = response.getEntity();
-	                    String str = EntityUtils.toString(entity);
+//		if(map.containsKey(clazz.getName())){
+//			return (ResponseHandler<T>)map.get(clazz.getName());
+//		}else{
+//		}
+		ResponseHandler<T> responseHandler = new ResponseHandler<T>() {
+			@Override
+			public T handleResponse(HttpResponse response)
+					throws ClientProtocolException, IOException {
+				int status = response.getStatusLine().getStatusCode();
+				if (status >= 200 && status < 300) {
+					HttpEntity entity = response.getEntity();
+					String str = EntityUtils.toString(entity);
 //	                    System.out.println("str:"+str);
-	                    return JsonUtil.parseObject(new String(str.getBytes("iso-8859-1"),"utf-8"), clazz);
-	                } else {
-	                    throw new ClientProtocolException("Unexpected response status: " + status);
-	                }
+					return JsonUtil.parseObject(new String(str.getBytes("iso-8859-1"),"utf-8"), clazz);
+				} else {
+					throw new ClientProtocolException("Unexpected response status: " + status);
 				}
-			};
-			map.put(clazz.getName(), responseHandler);
-			return responseHandler;
-		}
+			}
+		};
+		map.put(clazz.getName(), responseHandler);
+		return responseHandler;
 	}
 
 }
