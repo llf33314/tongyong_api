@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -339,29 +341,29 @@ public class HttpClienUtils {
 	  
 	
 	public static void main(String arg[]) throws Exception{
-//		RequestUtils<Map> baseParam=new RequestUtils<Map>();
-//		Map<String, Object> obj=new HashMap<>();
-//		
-//		Map<String, Object> params=new HashMap<>();
-//		params.put("busId", 562);
-//		params.put("company", "多粉平台");
-////		params.put("company", "dfpt");
-//		params.put("content", "可能你不信，我在测试");
-////		params.put("content", "i am test");
-//		params.put("mobiles", "13632374547");
-//		params.put("model", 0);
+		RequestUtils<Map> baseParam=new RequestUtils<Map>();
+		Map<String, Object> obj=new HashMap<>();
+		
+		Map<String, Object> params=new HashMap<>();
+		params.put("busId", 562);
+		params.put("company", "多粉平台");
+//		params.put("company", "dfpt");
+		params.put("content", "可能你不信，我在测试");
+//		params.put("content", "i am test");
+		params.put("mobiles", "13528307867");
+		params.put("model", 0);
 //		OldApiSms apiSms=new OldApiSms();
 //		apiSms.setBusId(562);
 //		apiSms.setCompany("多粉平台");
 //		apiSms.setContent("可能你不信，我在测试");
 //		apiSms.setMobiles("13528307867");
 //		apiSms.setModel(0);
-//		obj.put("reqdata", params);
-//		baseParam.setReqdata(params);
-//		String ss=com.alibaba.fastjson.JSONObject.toJSONString(obj);
-//		System.out.println(ss);
-//		
-//		Map map=reqPostUTF8( ss,"http://192.168.2.7:8080/8A5DA52E/smsapi/6F6D9AD2/79B4DE7C/sendSmsOld.do",Map.class,"123");
-//		System.out.println(com.alibaba.fastjson.JSONObject.toJSONString(map));
+		obj.put("reqdata", params);
+		baseParam.setReqdata(params);
+		String ss=com.alibaba.fastjson.JSONObject.toJSONString(obj);
+		System.out.println(ss);
+		
+		Map map=reqPostUTF8( ss,"http://yifriend.net/8A5DA52E/smsapi/6F6D9AD2/79B4DE7C/sendSmsOld.do",Map.class,"123");
+		System.out.println(com.alibaba.fastjson.JSONObject.toJSONString(map));
 	}
 }
