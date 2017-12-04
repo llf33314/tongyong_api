@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * HTTP工具类
- * 
+ *
  * @author PanSiran <br>
  * @date 2017年3月27日 <br>
  *
@@ -31,7 +31,7 @@ public class HttpUtils {
 		httpClient = HttpClients.createDefault();
 		// 设置超时时间
 		// 构建请求配置信息
-		 config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
+		config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
 				.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
 				.setSocketTimeout(10 * 1000) // 数据传输的最长时间
 				.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
@@ -43,7 +43,7 @@ public class HttpUtils {
 			httpClient = HttpClients.createDefault();
 			// 设置超时时间
 			// 构建请求配置信息
-			RequestConfig config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
+			config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
 					.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
 					.setSocketTimeout(10 * 1000) // 数据传输的最长时间
 					.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
@@ -85,7 +85,7 @@ public class HttpUtils {
 			conn.setRequestProperty("user-agent",
 					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
 			conn.setRequestProperty("Content-type", "application/json;charset=GBK");
-			
+
 			// 自定义header头部请求参数
 			if(headers != null && !headers.isEmpty()){
 				for(String key : headers.keySet()){
