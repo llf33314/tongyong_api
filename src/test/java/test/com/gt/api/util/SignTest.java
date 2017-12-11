@@ -3,6 +3,7 @@ package test.com.gt.api.util;
 import com.alibaba.fastjson.JSONObject;
 import com.gt.api.bean.sign.SignBean;
 import com.gt.api.exception.SignException;
+import com.gt.api.util.ShortUtil;
 import com.gt.api.util.sign.SignHttpUtils;
 import com.gt.api.util.sign.SignUtils;
 import org.junit.Test;
@@ -54,6 +55,13 @@ public class SignTest {
         } catch (SignException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testShortUrl(){
+        String url = "http://short.duofee.com/service/rest/shortUrl/getShortUrl";
+        String result = ShortUtil.sendLongUrlToShortApi(url, "http://www.baidu.com");
+        System.out.println(result);
     }
 
 }
