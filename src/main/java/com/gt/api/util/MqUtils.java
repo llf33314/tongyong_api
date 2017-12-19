@@ -21,9 +21,11 @@ public class MqUtils {
 	public static Channel channel;
 	static Address[]  add ;
 	public MqUtils(List<MqBean> bean, String user, String password) throws IOException, TimeoutException{
-		if(channel.equals(null)||channel==null){
+		if(channel==null){
+			add = new Address[bean.size()];
 			for(int i=0;i<bean.size();i++){
-				add[i] = new Address(bean.get(i).getMqIp(),bean.get(i).getPort());
+				MqBean obj = bean.get(i);
+				add[i] = new Address(obj.getMqIp(),obj.getPort());
 			}
 			this.MqContent(user,password);
 		}
@@ -38,7 +40,7 @@ public class MqUtils {
 		channel = connection.createChannel();  //创建消息弹到
 	}
 	//商城内部的消息队列 exchange转换器，queueName队列
-	public static void MqMessage(String exchange,String queueName,String message) throws IOException, TimeoutException{
+	public  void MqMessage(String exchange,String queueName,String message) throws IOException, TimeoutException{
 		channel.exchangeDeclare(exchange, "direct", true);//声明转发器和类型
 		channel.queueDeclare(queueName, true, false, false, null);  
 		channel.basicPublish("", queueName, null, message.getBytes());
