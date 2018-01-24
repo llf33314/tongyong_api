@@ -94,6 +94,12 @@ public class ShortUtil {
         return result;
     }
 
+    /**
+     * 新短链接POST工具类
+     * @param shortApiurl
+     * @param longUrl
+     * @return
+     */
     public static String newSendLongUrlToShortApi(String shortApiurl, String longUrl){
         Map<String, String> headers = encryptHeader();
         HttpUriRequest httpUriRequest = RequestBuilder.post()
