@@ -289,9 +289,15 @@ public class HttpUtils {
 						e1.printStackTrace();
 					}
 				}
+			}else{
+				//没响应，代表没请求到
+				config = null;
+				return null;
 			}
 		} catch (IOException e) {
 			try {
+				//没响应，代表没请求到
+				config = null;
 				return null;
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
