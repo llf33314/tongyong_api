@@ -1,13 +1,18 @@
 package com.gt.api.util;
 
+import com.alibaba.fastjson.JSONObject;
+import com.gt.api.bean.sign.SignBean;
+import com.gt.api.util.httpclient.LocalHttpClient;
+import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.StringEntity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -51,7 +56,6 @@ public class ShortUtil {
                     conn.setRequestProperty(key, headers.get(key));
                 }
             }
-
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -59,7 +63,9 @@ public class ShortUtil {
             // 获取URLConnection对象对应的输出流
             out = new PrintWriter(conn.getOutputStream());
             // 发送请求参数
-//            out.print(longUrl);
+//            JSONObject json = new JSONObject();
+//            json.put("longUrl",longUrl);
+//            out.print(json);
             // flush输出流的缓冲
             out.flush();
             // 定义BufferedReader输入流来读取URL的响应
@@ -88,6 +94,16 @@ public class ShortUtil {
         return result;
     }
 
+    public static String newSendLongUrlToShortApi(String shortApiurl, String longUrl){
+        Map<String, String> headers = encryptHeader();
+        HttpUriRequest httpUriRequest = RequestBuilder.post()
+                .setHeader("key",headers.get("key").toString())
+                .setHeader("timestamp",headers.get("timestamp").toString())
+                .setUri(shortApiurl)
+                .setEntity(new StringEntity(longUrl,Charset.forName("utf-8")))
+                .build();
+        return LocalHttpClient.executeJsonResultUTF8(httpUriRequest,String.class);
+    }
     /**
      * 生成头部加密参数
      * @return

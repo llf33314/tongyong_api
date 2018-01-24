@@ -60,9 +60,10 @@ public class SignTest {
 
     @Test
     public void testShortUrl(){
-        String url = "https://mess.deeptel.com.cn/messMobile/22/79B4DE7C/getMessMainById";
+        String url = "https://canyin.deeptel.com.cn//html/phone/tak/index.html#/shopList/33";
         try {
-            System.out.println(HttpsClientUtil.doGet(url));
+            System.out.println(ShortUtil.newSendLongUrlToShortApi(
+                    "http://short.duofee.com/service/rest/shortUrl/getNewShortUrl",url));
         } catch (Exception e) {
             e.printStackTrace();
         }
