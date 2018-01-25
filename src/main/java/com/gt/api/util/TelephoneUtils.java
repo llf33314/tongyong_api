@@ -16,7 +16,7 @@ public class TelephoneUtils {
 	 */
 	public static boolean isMobileNO(String mobiles) {
 		Pattern p = Pattern
-				.compile("^(13[0123456789][0-9]{8}|15[0123456789][0-9]{8}|17[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$");
+				.compile("^((\\+?86)|(\\(\\+86\\)))?(13[0123456789][0-9]{8}|15[0123456789][0-9]{8}|17[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$");
 		Matcher m = p.matcher(mobiles);
 		return m.matches();
 	}
@@ -66,5 +66,27 @@ public class TelephoneUtils {
 			flag = 4;
 		}
 		return flag;
+	}
+
+	/**
+	 * 国际电话验证 true是验证通过，false是验证失败
+	 * @param telephone
+	 * @param areaCode
+	 * @return
+	 */
+	public static boolean interMobilePhone(String telephone,String areaCode) {
+		boolean result ;
+		String code = "86";
+		if(areaCode==code||areaCode.equals(code)){
+			result = isMobileNO(telephone);
+		}else{
+			result = true;
+		}
+		return result;
+	}
+
+
+	public static void main(String arg[]){
+		System.out.println(isMobileNO("15170222742"));
 	}
 }
