@@ -4,16 +4,26 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.ServletRequest;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -27,28 +37,39 @@ public class HttpUtils {
 
 	private static 	CloseableHttpClient httpClient = null;
 	private static 	RequestConfig config = null;
+	private static PoolingHttpClientConnectionManager cm = null;
 	static{
-		httpClient = HttpClients.createDefault();
-		// 设置超时时间
-		// 构建请求配置信息
-		config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
-				.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
-				.setSocketTimeout(10 * 1000) // 数据传输的最长时间
-				.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
-				.build();
+		init();
 	}
 
 	public static void init(){
-		if(httpClient==null||httpClient.equals("")||config==null||config.equals("")){
-			httpClient = HttpClients.createDefault();
-			// 设置超时时间
-			// 构建请求配置信息
+		if(httpClient==null) {
+			LayeredConnectionSocketFactory sslsf = null;
+			try {
+				sslsf = new SSLConnectionSocketFactory(SSLContext.getDefault());
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+					.register("https", sslsf)
+					.register("http", new PlainConnectionSocketFactory())
+					.build();
+			cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+			cm.setMaxTotal(200);
+			cm.setDefaultMaxPerRoute(200);
+			httpClient = HttpClients.custom()
+					.setConnectionManager(cm)
+					.build();
+			SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(5000).build();
+			cm.setDefaultSocketConfig(socketConfig);
 			config = RequestConfig.custom().setConnectTimeout(5000) // 创建连接的最长时间
 					.setConnectionRequestTimeout(500) // 从连接池中获取到连接的最长时间
-					.setSocketTimeout(10 * 1000) // 数据传输的最长时间
-					.setStaleConnectionCheckEnabled(true) // 提交请求前测试连接是否可用
+					.setSocketTimeout(10000) // 数据传输的最长时间
 					.build();
-
+			httpClient = HttpClients.custom()
+					.setConnectionManager(cm).setDefaultRequestConfig(config).build();
+			// 设置超时时间
+			// 构建请求配置信息
 		}
 	}
 
@@ -262,7 +283,10 @@ public class HttpUtils {
 				entity.setContentType("application/json");
 				post.setEntity(entity);
 			}
+			long l = System.currentTimeMillis();
 			HttpResponse response = httpClient.execute(post);
+			long q = System.currentTimeMillis();
+			System.out.println("httpclient请求所耗时间:"+(q-l));
 			url = URLDecoder.decode(url, "UTF-8");
 			/** 请求发送成功，并得到响应 **/
 			if (response.getStatusLine().getStatusCode() == 200) {
@@ -291,19 +315,20 @@ public class HttpUtils {
 				}
 			}else{
 				//没响应，代表没请求到
-				config = null;
+				httpClient = null;
 				return null;
 			}
 		} catch (IOException e) {
 			try {
 				//没响应，代表没请求到
-				config = null;
+				httpClient = null;
 				return null;
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
+
 		return jsonResult;
 	}
 
